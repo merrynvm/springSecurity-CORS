@@ -1,5 +1,5 @@
 # ¬ Spring server application
-#### § write a Spring Boot application with the necessary dependencies that:
+#### § write a Spring Boot application with the necessary dependencies that: (Spring Web, Spring Boot DevTools, Validation, Spring Security)
 ###### ~ allows the connection to an endpoint custom (that returns a welcome message) to the calls coming from the React local server
 ###### ~ test the connection to the endpoint using the React application (you need to run its local server)
 
