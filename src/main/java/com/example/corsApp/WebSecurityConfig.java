@@ -10,6 +10,8 @@ import org.springframework.web.cors.CorsConfiguration;
 import org.springframework.web.cors.CorsConfigurationSource;
 import org.springframework.web.cors.UrlBasedCorsConfigurationSource;
 
+import java.util.List;
+
 import static org.springframework.security.config.Customizer.withDefaults;
 
 @Configuration
@@ -18,16 +20,22 @@ public class WebSecurityConfig {
     @Bean
     public CorsConfigurationSource corsConfigurationSource() {
         CorsConfiguration defaultCors = new CorsConfiguration().applyPermitDefaultValues();
-        defaultCors.addAllowedOrigin("http://localhost:3000");
-        defaultCors.addAllowedHeader("*");
-        defaultCors.addAllowedMethod("*");
+        defaultCors.setAllowedOrigins(List.of("http://localhost:3000"));
+        defaultCors.setAllowedMethods(List.of("*"));
+        defaultCors.setAllowedHeaders(List.of("*"));
+
+        //mai usare questi dato che aggiungono ma non impostano il primo valore.
+        //è come se rimanesse il "*" quindi lascia abilitati tutti gli endpoint.
+        //defaultCors.addAllowedOrigin("http://localhost:3005");
+        //defaultCors.addAllowedHeader("*");
+        //defaultCors.addAllowedMethod("*");
 
         //se ti serve anche specificare header/metodi/credentials:
         //defaultCors.setAllowedOrigins(List.of("http://localhost:3000")); per avere una lista di endpoint
         //defaultCors.setAllowCredentials(true);
 
         UrlBasedCorsConfigurationSource source = new UrlBasedCorsConfigurationSource();
-        source.registerCorsConfiguration("/**", defaultCors);
+        source.registerCorsConfiguration("/custom/**", defaultCors);
 
         //per aggiungere altri pattern (endpoint) da cui accedere:
         //source.registerCorsConfiguration("admim/**", defaultCors);
@@ -48,7 +56,7 @@ public class WebSecurityConfig {
 
                 // 4) Autorizzazioni
                 .authorizeHttpRequests(auth -> auth
-                        .requestMatchers("/**").permitAll()
+                        .requestMatchers("/custom/**").permitAll()
 
                         //puoi aggiungere altri matchers specifici prima, es:
                         //requestMatchers("/api/public/**").permitAll()
